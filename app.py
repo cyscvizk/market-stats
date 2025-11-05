@@ -1,5 +1,10 @@
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 # Add src directory to Python path
 src_path = Path(__file__).parent / "src"

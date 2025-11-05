@@ -1,5 +1,5 @@
 from server.models.api import MessageResponse, HealthResponse
-# from gemini import gemini_stock_data_colelctor
+from server.api.gemini import get_stock_data
 
 def check_health() -> HealthResponse:
     """Check if the API is healthy."""
@@ -8,11 +8,12 @@ def check_health() -> HealthResponse:
 def process_message(message: str) -> MessageResponse:
     """Process the incoming message and return response with message details."""
     
+    data_response = get_stock_data(message)
+    
     # 1) data = gemini_stock_data_colelctor(message)
     # 2) function that stores data in db
     # 3) call prediciton script
     # 4) prepares final response with gemini again
     return MessageResponse(
-        received_message=message,
-        length=len(message)
+        received_message=data_response,
     )

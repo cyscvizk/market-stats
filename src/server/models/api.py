@@ -7,8 +7,7 @@ class MessageRequest(BaseModel):
 
 class MessageResponse(BaseModel):
     received_message: str
-    length: int
-
+    
 
 class HealthResponse(BaseModel):
     status: str

@@ -11,3 +11,10 @@ class MessageResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     status: str
+
+class DataResponse(BaseModel):
+    symbol: str
+    last_price: float
+    green_daily_ytd: int
+    red_daily_ytd: int
+    probability: int

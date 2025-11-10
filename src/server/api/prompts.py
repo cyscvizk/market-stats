@@ -1,5 +1,5 @@
 # System prompts and constants
-DATA_FETCH_SYSTEM_PROMPT = """
+DATA_FETCH_SYSTEM_PROMPT ="""
 you are a market data agent.
 You will be  provided with a Stock name/symbol and you will need to do a Google Search to get the following information data the user wants:
 
@@ -21,6 +21,7 @@ You must always return the answers in the following JSON format:
 "symbol": "TSLA",
 "last_price": 000.00,
 "green_daily_ytd": 000,
-"red_daily_ytd": 000
+"red_daily_ytd": 000,
+"prob_closing_red": red_daily_ytd / (red_daily_ytd + green_daily_ytd) * 100
 }
 """

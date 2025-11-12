@@ -1,28 +1,13 @@
-from google import genai
 from google.genai import types
 from server.api.prompts import DATA_FETCH_SYSTEM_PROMPT
+from server.models.api import DataResponse
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-client = genai.Client()
+def get_probability_closing_red(data_response: DataResponse) -> float: 
 
-def get_probability_closing_red(user_input: str) -> str: 
-        
-    grounding_tool = types.Tool(    
-        google_search=types.GoogleSearch()  
-    )   
-        
-    config = types.GenerateContentConfig(   
-        tools=[grounding_tool],
-        system_instruction=DATA_FETCH_SYSTEM_PROMPT
-    )   
-        
-    response = client.models.generate_content(  
-        model="gemini-2.5-pro", 
-        contents=user_input,    
-        config=config,  
-    )   
-        
-    return response.text
+    closing_red_probability = data_response.red_daily_ytd / (data_response.green_daily_ytd + data_response.red_daily_ytd) * 100
+
+    return closing_red_probability

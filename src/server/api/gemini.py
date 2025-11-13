@@ -42,3 +42,7 @@ def get_stock_data(user_input: str) -> DataResponse:
         text = text.strip()
 
     return DataResponse.model_validate_json(text)
+
+def create_response_message(data_response: DataResponse, closing_red_probability: float, message: str) -> str:
+    return_message = f"This is a placeholder"
+    return return_message

@@ -18,3 +18,9 @@ class DataResponse(BaseModel):
     green_daily_ytd: int
     red_daily_ytd: int
     probability: int
+    
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+    #required and optinal fields still missing

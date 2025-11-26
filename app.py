@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-
+####
+# step 1) create a databse from scratch code
+# database validation part -> if false run db creation
+###
 # Add src directory to Python path
 src_path = Path(__file__).parent / "src"
 sys.path.insert(0, str(src_path))

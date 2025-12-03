@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class MessageRequest(BaseModel):
@@ -23,4 +24,10 @@ class UserCreate(BaseModel):
     username: str
     email: str
     password: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     #required and optinal fields still missing
+    
+class UserResponse(BaseModel):
+    message: str
+    

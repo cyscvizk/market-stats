@@ -2,7 +2,7 @@ from server.models.api import MessageResponse, HealthResponse
 from server.api.gemini import get_stock_data
 from server.api.prediction import get_probability_closing_red
 from server.db_manager.sql_executor import execute_sql
-from server.db_manager.user import generate_create_user_sql
+from server.db_manager.user import sql_create_user
 
 def check_health() -> HealthResponse:
     """Check if the API is healthy."""
@@ -23,8 +23,8 @@ def process_message(message: str) -> MessageResponse:
     )
 def create_user(user_data) -> str:
     """Create a new user in the database."""
-    sql_statement = generate_create_user_sql(user_data)
-    success = execute_sql(sql_statement)
+    sql_statement = sql_create_user()
+    success = execute_sql(sql_statement, params=(user_data.username, user_data.first_name, user_data.last_name, user_data.email, user_data.password))
     if success != True:
         return "User creation failed."
     return "User created successfully."

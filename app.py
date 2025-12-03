@@ -17,6 +17,9 @@ sys.path.insert(0, str(src_path))
 import uvicorn
 from server.core.config import config
 
+from server.db_manager.creation import initialize_db
+initialize_db()
+
 if __name__ == "__main__":
     uvicorn.run(
         "server.main:app",

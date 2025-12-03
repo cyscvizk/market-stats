@@ -6,6 +6,7 @@ class Config(BaseSettings):
     host: str = "localhost"
     port: int = 8000
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
+    google_api_key: str = ""
 
     class Config:
         env_file = ".env"

@@ -18,12 +18,17 @@ def execute_sql(sql: str, params: tuple = None, fetch: bool = False):
     cursor = conn.cursor()
 
     if params:
-        cursor.execute(sql, params)
+        try:
+            cursor.execute(sql, params)
+            result = conn.commit()
+            conn.close()
+            print(result) #### as indicator for where we need to handle the exceptions of entries being present already
+        except Exception as e:
+            print(f"SQL Execution Error: {e}")
+            conn.close()
+            return False
     else:
-        cursor.execute(sql)
+        print("userdata not set")
+        return False
 
-    rows = cursor.fetchall() if fetch else None
-    conn.commit()
-    conn.close()
-
-    return rows
+    return True

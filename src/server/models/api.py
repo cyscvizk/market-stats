@@ -32,8 +32,10 @@ class UserResponse(BaseModel):
 
 class UserUpdate(BaseModel):
     username: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: str
-    password : str
+    password: str
     
 class UserDetail(BaseModel):
     id: int
@@ -49,10 +51,7 @@ class ProbabilityCreate(BaseModel):
     user_id: int
     input_string: str
     stock_symbol: str
-    probability_green: int
-    probability_red: int
-    created_at: str
-    updated_at: str
+    probability_green: float
     
 class ProbabilityResponse(BaseModel):
     message: str
@@ -61,18 +60,14 @@ class ProbabilityUpdate(BaseModel):
     user_id: int
     input_string: str
     stock_symbol: str
-    probability_green: int
-    probability_red: int
-    created_at: str
-    updated_at: str
+    probability_green: float
     
 class ProbabilityDetail(BaseModel):
     id: int
     user_id: int
     input_string: str
     stock_symbol: str
-    probability_green: int
-    probability_red: int
+    probability_green: float
     created_at: str
     updated_at: str
 

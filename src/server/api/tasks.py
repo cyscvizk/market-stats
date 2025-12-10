@@ -75,7 +75,12 @@ def list_users():
 
 def create_probability(probability_data) -> dict:
     sql_statement = sql_create_probability()
-    result = execute_sql(sql_statement, params=(...))
+    result = execute_sql(sql_statement, params=(
+        probability_data.user_id,
+        probability_data.input_string,
+        probability_data.stock_symbol,
+        probability_data.probability_green
+    ))
 
     if result == True:
         return {"success": True, "message": "Probability created successfully"}

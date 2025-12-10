@@ -17,7 +17,9 @@ class DataResponse(BaseModel):
     green_daily_ytd: int
     red_daily_ytd: int
     probability: int
-    
+
+ # --------------------- USER ---------------------
+
 class UserCreate(BaseModel):
     username: str
     email: str
@@ -40,4 +42,38 @@ class UserDetail(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     created_at: str
+
+# --------------------- PROBABILITY ---------------------
+
+class ProbabilityCreate(BaseModel):
+    user_id: int
+    input_string: str
+    stock_symbol: str
+    probability_green: int
+    probability_red: int
+    created_at: str
+    updated_at: str
+    
+class ProbabilityResponse(BaseModel):
+    message: str
+
+class ProbabilityUpdate(BaseModel):
+    user_id: int
+    input_string: str
+    stock_symbol: str
+    probability_green: int
+    probability_red: int
+    created_at: str
+    updated_at: str
+    
+class ProbabilityDetail(BaseModel):
+    id: int
+    user_id: int
+    input_string: str
+    stock_symbol: str
+    probability_green: int
+    probability_red: int
+    created_at: str
+    updated_at: str
+
     

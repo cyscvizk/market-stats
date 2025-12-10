@@ -2,7 +2,15 @@ from server.models.api import MessageResponse, HealthResponse
 from server.api.gemini import get_stock_data
 from server.api.prediction import get_probability_closing_red
 from server.db_manager.sql_executor import execute_sql
-from server.db_manager.user import sql_create_user
+from server.db_manager.user import (
+    sql_create_user, sql_get_user_by_id, sql_update_user, 
+    sql_delete_user, sql_list_users
+)
+from server.db_manager.probability import (
+    sql_create_probability, sql_get_probability_by_id, 
+    sql_get_probability_by_user_id, sql_update_probability,
+    sql_delete_probability, sql_list_probabilities
+)
 
 def check_health() -> HealthResponse:
     """Check if the API is healthy."""
@@ -88,7 +96,11 @@ def delete_probability(probability_id: int):
     sql = sql_delete_probability()
     return execute_sql(sql, params=(probability_id,))
 
-def list_probabilities():
-    sql = sql_list_probabilities()
-    return execute_sql(sql, fetch=True)
+def list_probabilities(user_id: int = None):
+    if user_id is not None:
+        sql = sql_get_probability_by_user_id()
+        return execute_sql(sql, params=(user_id,), fetch=True)
+    else:
+        sql = sql_list_probabilities()
+        return execute_sql(sql, fetch=True)
 

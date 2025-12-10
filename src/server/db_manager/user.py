@@ -42,4 +42,8 @@ def sql_delete_user():
 
 # -------------------- LIST --------------------
 def sql_list_users():
-    return "SELECT * FROM user_table ORDER BY created_at DESC"
+    return """
+        SELECT id, username, first_name, last_name, email, created_at, updated_at 
+        FROM user_table 
+        ORDER BY created_at DESC
+    """

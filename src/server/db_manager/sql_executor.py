@@ -13,22 +13,30 @@ DB_PATH = Path(__file__).parent / "market_stats.db"
 
 
 def execute_sql(sql: str, params: tuple = None, fetch: bool = False):
-    
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    if params:
-        try:
+    try:
+        if params:
             cursor.execute(sql, params)
-            result = conn.commit()
-            conn.close()
-            print(result) #### as indicator for where we need to handle the exceptions of entries being present already
-        except Exception as e:
-            print(f"SQL Execution Error: {e}")
-            conn.close()
-            return False
-    else:
-        print("userdata not set")
-        return False
+        else:
+            cursor.execute(sql)
 
-    return True
+        rows = cursor.fetchall() if fetch else None
+        conn.commit()
+        return rows if fetch else True
+
+    except sqlite3.IntegrityError as e:
+        # This happens when UNIQUE constraint is violated
+        error_message = str(e)
+        if "username" in error_message:
+            return {"error": "username_taken", "message": "This username already exists"}
+        elif "email" in error_message:
+            return {"error": "email_taken", "message": "This email already exists"}
+        return {"error": "integrity_error", "message": str(e)}
+
+    except sqlite3.Error as e:
+        return {"error": "database_error", "message": str(e)}
+
+    finally:
+        conn.close()

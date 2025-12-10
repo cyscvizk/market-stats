@@ -31,3 +31,21 @@ def create_user(user_data) -> dict:
         return {"success": False, **result}
     else:
         return {"success": False, "message": "Unknown error"}
+
+def get_user(user_id: int):
+    sql = sql_get_user_by_id()
+    result = execute_sql(sql, params=(user_id,), fetch=True)
+    if result:
+        return result[0]  # Return first row
+    return None
+
+def update_user(user_id: int, user_data):
+    sql = sql_update_user()
+    params = (user_data.username, user_data.first_name,
+              user_data.last_name, user_data.email,
+              user_data.password, user_id)
+    return execute_sql(sql, params=params)
+
+def delete_user(user_id: int):
+    sql = sql_delete_user()
+    return execute_sql(sql, params=(user_id,))

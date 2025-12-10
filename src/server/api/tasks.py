@@ -21,10 +21,13 @@ def process_message(message: str) -> MessageResponse:
     return MessageResponse(
         received_message=data_response,
     )
-def create_user(user_data) -> str:
-    """Create a new user in the database."""
+def create_user(user_data) -> dict:
     sql_statement = sql_create_user()
-    success = execute_sql(sql_statement, params=(user_data.username, user_data.first_name, user_data.last_name, user_data.email, user_data.password))
-    if success != True:
-        return "User creation failed."
-    return "User created successfully."
+    result = execute_sql(sql_statement, params=(...))
+
+    if result == True:
+        return {"success": True, "message": "User created successfully"}
+    elif isinstance(result, dict) and "error" in result:
+        return {"success": False, **result}
+    else:
+        return {"success": False, "message": "Unknown error"}

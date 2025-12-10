@@ -36,3 +36,24 @@ def create_user_endpoint(user_data: UserCreate):
         raise HTTPException(status_code=500, detail="User creation failed")
 
     return {"message": result["message"]}
+
+@router.get("/user/{user_id}", response_model=UserDetail)
+def get_user_endpoint(user_id: int):
+    user = get_user(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+@router.put("/user/{user_id}", response_model=UserResponse)
+def update_user_endpoint(user_id: int, user_data: UserUpdate):
+    success = update_user(user_id, user_data)
+    if not success:
+        raise HTTPException(status_code=400, detail="Update failed")
+    return {"message": "User updated successfully"}
+
+@router.delete("/user/{user_id}", response_model=UserResponse)
+def delete_user_endpoint(user_id: int):
+    success = delete_user(user_id)
+    if not success:
+        raise HTTPException(status_code=400, detail="Delete failed")
+    return {"message": "User deleted successfully"}

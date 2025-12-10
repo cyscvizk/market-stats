@@ -24,6 +24,8 @@ def message(user_data: UserCreate):
     
     return {"message": success_message}
 
+# --------------------- USER ---------------------
+
 @router.post("/user_create", response_model=UserResponse)
 def create_user_endpoint(user_data: UserCreate):
     result = create_user(user_data)
@@ -57,3 +59,35 @@ def delete_user_endpoint(user_id: int):
     if not success:
         raise HTTPException(status_code=400, detail="Delete failed")
     return {"message": "User deleted successfully"}
+
+# --------------------- PROBABILITY ---------------------
+
+@router.post("/probability_create", response_model=ProbabilityResponse)
+def create_probability_endpoint(probability_data: ProbabilityCreate):
+    result = create_probability(probability_data)
+
+    if not result.get("success"):
+        raise HTTPException(status_code=500, detail="Probability creation failed")
+
+    return {"message": result["message"]}
+    
+@router.get("/probability/{probability_id}", response_model=ProbabilityDetail)
+def get_probability_endpoint(probability_id: int):
+    probability = get_probability(probability_id)
+    if not probability:
+        raise HTTPException(status_code=404, detail="Probability not found")
+    return probability
+    
+@router.put("/probability/{probability_id}", response_model=ProbabilityResponse)
+def update_probability_endpoint(probability_id: int, probability_data: ProbabilityUpdate):
+    success = update_probability(probability_id, probability_data)
+    if not success:
+        raise HTTPException(status_code=400, detail="Update failed")
+    return {"message": "Probability updated successfully"}
+    
+@router.delete("/probability/{probability_id}", response_model=ProbabilityResponse)
+def delete_probability_endpoint(probability_id: int):
+    success = delete_probability(probability_id)
+    if not success:
+        raise HTTPException(status_code=400, detail="Delete failed")
+    return {"message": "Probability deleted successfully"}

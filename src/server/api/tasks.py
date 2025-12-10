@@ -21,6 +21,9 @@ def process_message(message: str) -> MessageResponse:
     return MessageResponse(
         received_message=data_response,
     )
+
+# --------------------- USER ---------------------
+
 def create_user(user_data) -> dict:
     sql_statement = sql_create_user()
     result = execute_sql(sql_statement, params=(...))
@@ -49,3 +52,43 @@ def update_user(user_id: int, user_data):
 def delete_user(user_id: int):
     sql = sql_delete_user()
     return execute_sql(sql, params=(user_id,))
+
+def list_users():
+    sql = sql_list_users()
+    return execute_sql(sql, fetch=True)
+
+# --------------------- PROBABILITY ---------------------
+
+def create_probability(probability_data) -> dict:
+    sql_statement = sql_create_probability()
+    result = execute_sql(sql_statement, params=(...))
+
+    if result == True:
+        return {"success": True, "message": "Probability created successfully"}
+    elif isinstance(result, dict) and "error" in result:
+        return {"success": False, **result}
+    else:
+        return {"success": False, "message": "Unknown error"}
+
+def get_probability(probability_id: int):
+    sql = sql_get_probability_by_id()
+    result = execute_sql(sql, params=(probability_id,), fetch=True)
+    if result:
+        return result[0]  # Return first row
+    return None
+
+def update_probability(probability_id: int, probability_data):
+    sql = sql_update_probability()
+    params = (probability_data.user_id, probability_data.input_string,
+              probability_data.stock_symbol, probability_data.probability_green,
+              probability_id)
+    return execute_sql(sql, params=params)
+
+def delete_probability(probability_id: int):
+    sql = sql_delete_probability()
+    return execute_sql(sql, params=(probability_id,))
+
+def list_probabilities():
+    sql = sql_list_probabilities()
+    return execute_sql(sql, fetch=True)
+

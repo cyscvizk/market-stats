@@ -34,7 +34,13 @@ def process_message(message: str) -> MessageResponse:
 
 def create_user(user_data) -> dict:
     sql_statement = sql_create_user()
-    result = execute_sql(sql_statement, params=(...))
+    result = execute_sql(sql_statement, params=(
+        user_data.username,
+        user_data.first_name,
+        user_data.last_name,
+        user_data.email,
+        user_data.password
+    ))
 
     if result == True:
         return {"success": True, "message": "User created successfully"}

@@ -14,6 +14,7 @@ DB_PATH = Path(__file__).parent / "market_stats.db"
 
 def execute_sql(sql: str, params: tuple = None, fetch: bool = False):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row  # Return dict-like objects instead of tuples
     cursor = conn.cursor()
 
     try:
@@ -22,9 +23,13 @@ def execute_sql(sql: str, params: tuple = None, fetch: bool = False):
         else:
             cursor.execute(sql)
 
-        rows = cursor.fetchall() if fetch else None
+        if fetch:
+            rows = cursor.fetchall()
+            # Convert Row objects to dictionaries
+            return [dict(row) for row in rows] if rows else []
+        
         conn.commit()
-        return rows if fetch else True
+        return True
 
     except sqlite3.IntegrityError as e:
         # This happens when UNIQUE constraint is violated

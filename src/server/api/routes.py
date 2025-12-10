@@ -6,7 +6,7 @@ from server.models.api import (
 )
 from server.api.tasks import (
     check_health, process_message, 
-    create_user, get_user, update_user, delete_user,
+    create_user, get_user, update_user, delete_user, list_users,
     create_probability, get_probability, update_probability, delete_probability
 )
 
@@ -61,6 +61,15 @@ def delete_user_endpoint(user_id: int):
     if not success:
         raise HTTPException(status_code=400, detail="Delete failed")
     return {"message": "User deleted successfully"}
+
+@router.get("/users", response_model=list[UserDetail])
+def list_users_endpoint():
+    """Get all users in the system."""
+    users = list_users()
+    if users is None:
+        return []
+    return users
+
 
 # --------------------- PROBABILITY ---------------------
 

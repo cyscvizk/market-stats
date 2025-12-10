@@ -96,11 +96,16 @@ def delete_probability(probability_id: int):
     sql = sql_delete_probability()
     return execute_sql(sql, params=(probability_id,))
 
-def list_probabilities(user_id: int = None):
+def list_probabilities():
+    sql = sql_list_probabilities()
+    return execute_sql(sql, fetch=True)
+
+def list_probabilities_by_user_id(user_id: int = None):
     if user_id is not None:
         sql = sql_get_probability_by_user_id()
         return execute_sql(sql, params=(user_id,), fetch=True)
     else:
         sql = sql_list_probabilities()
         return execute_sql(sql, fetch=True)
+
 

@@ -37,3 +37,7 @@ def sql_delete_probability():
 # -------------------- LIST --------------------
 def sql_list_probabilities():
     return "SELECT * FROM probability_table ORDER BY created_at DESC"
+
+def sql_list_probabilities_by_user_id(user_id: int):    
+    return "SELECT * FROM probability_table WHERE user_id = ? ORDER BY created_at DESC"
+

@@ -1,7 +1,14 @@
-from fastapi import APIRouter
-from server.models.api import MessageRequest, MessageResponse, HealthResponse, UserCreate, UserResponse
-from server.api.tasks import check_health, process_message, create_user
-from fastapi import HTTPException
+from fastapi import APIRouter, HTTPException
+from server.models.api import (
+    MessageRequest, MessageResponse, HealthResponse, 
+    UserCreate, UserResponse, UserDetail, UserUpdate,
+    ProbabilityCreate, ProbabilityResponse, ProbabilityDetail, ProbabilityUpdate
+)
+from server.api.tasks import (
+    check_health, process_message, 
+    create_user, get_user, update_user, delete_user,
+    create_probability, get_probability, update_probability, delete_probability
+)
 
 router = APIRouter()
 
@@ -17,14 +24,9 @@ def message(request: MessageRequest):
     """Process a message and return details about it."""
     return process_message(request.message)
 
-@router.post("/user_create", response_model=UserResponse)
-def message(user_data: UserCreate):
-    
-    success_message = create_user(user_data)
-    
-    return {"message": success_message}
 
 # --------------------- USER ---------------------
+
 
 @router.post("/user_create", response_model=UserResponse)
 def create_user_endpoint(user_data: UserCreate):

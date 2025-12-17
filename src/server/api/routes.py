@@ -7,7 +7,8 @@ from server.models.api import (
 from server.api.tasks import (
     check_health, process_message, 
     create_user, get_user, update_user, delete_user, list_users,
-    create_probability, get_probability, update_probability, delete_probability
+    create_probability, get_probability, update_probability, delete_probability,
+    list_probabilities_by_user_id, list_probabilities_by_stock_symbol
 )
 
 router = APIRouter()
@@ -102,3 +103,20 @@ def delete_probability_endpoint(probability_id: int):
     if not success:
         raise HTTPException(status_code=400, detail="Delete failed")
     return {"message": "Probability deleted successfully"}
+
+@router.get("/probabilities/{user_id}", response_model=list[ProbabilityDetail])
+def list_probabilities_by_user_id_endpoint(user_id: int):
+    """Get all probabilities for a specific user."""
+    probabilities = list_probabilities_by_user_id(user_id)
+    if probabilities is None:
+        return []
+    return probabilities
+
+@router.get("/probabilities", response_model=list[ProbabilityDetail])
+def list_probabilities_by_stock_symbol_endpoint(stock_symbol: str):
+    """Get all probabilities for a specific stock symbol."""
+    probabilities = list_probabilities_by_stock_symbol(stock_symbol)
+    if probabilities is None:
+        return []
+    return probabilities
+    

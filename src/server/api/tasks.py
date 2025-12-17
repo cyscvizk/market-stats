@@ -9,7 +9,8 @@ from server.db_manager.user import (
 from server.db_manager.probability import (
     sql_create_probability, sql_get_probability_by_id, 
     sql_get_probability_by_user_id, sql_update_probability,
-    sql_delete_probability, sql_list_probabilities
+    sql_delete_probability, sql_list_probabilities,
+    sql_get_probability_by_stock_symbol
 )
 
 def check_health() -> HealthResponse:
@@ -118,5 +119,9 @@ def list_probabilities_by_user_id(user_id: int = None):
     else:
         sql = sql_list_probabilities()
         return execute_sql(sql, fetch=True)
+
+def list_probabilities_by_stock_symbol(stock_symbol: str):
+    sql = sql_get_probability_by_stock_symbol()
+    return execute_sql(sql, params=(stock_symbol,), fetch=True)
 
 

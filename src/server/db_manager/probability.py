@@ -17,6 +17,9 @@ def sql_get_probability_by_id():
 def sql_get_probability_by_user_id():
     return "SELECT * FROM probability_table WHERE user_id = ?"
 
+def sql_get_probability_by_stock_symbol():
+    return "SELECT * FROM probability_table WHERE stock_symbol = ? ORDER BY created_at DESC"
+
 # -------------------- UPDATE --------------------
 def sql_update_probability():
     return """

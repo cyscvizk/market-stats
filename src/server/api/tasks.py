@@ -146,6 +146,5 @@ def get_stock_valuation(symbol: str) -> dict:
             "roe": 0.0,
             "de_ratio": 0.0,
             "eps_growth": 0.0,
-            "evaluation": f"Error parsing response from Gemini: {raw_response}",
-            "is_undervalued": False
+            "evaluation": f"Error parsing response from Gemini: {raw_response}"
         }

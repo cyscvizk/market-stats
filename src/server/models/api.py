@@ -71,4 +71,13 @@ class ProbabilityDetail(BaseModel):
     created_at: str
     updated_at: str
 
+class ValuationResponse(BaseModel):
+    symbol: str
+    pe_ratio: float
+    peg_ratio: float
+    roe: float
+    de_ratio: float
+    eps_growth: float
+    evaluation: str
+
     

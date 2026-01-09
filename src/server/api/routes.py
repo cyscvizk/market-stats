@@ -2,13 +2,15 @@ from fastapi import APIRouter, HTTPException
 from server.models.api import (
     MessageRequest, MessageResponse, HealthResponse, 
     UserCreate, UserResponse, UserDetail, UserUpdate,
-    ProbabilityCreate, ProbabilityResponse, ProbabilityDetail, ProbabilityUpdate
+    ProbabilityCreate, ProbabilityResponse, ProbabilityDetail, ProbabilityUpdate,
+    ValuationResponse
 )
 from server.api.tasks import (
     check_health, process_message, 
     create_user, get_user, update_user, delete_user, list_users,
     create_probability, get_probability, update_probability, delete_probability,
-    list_probabilities_by_user_id, list_probabilities_by_stock_symbol
+    list_probabilities_by_user_id, list_probabilities_by_stock_symbol,
+    get_stock_valuation
 )
 
 router = APIRouter()
@@ -119,4 +121,11 @@ def list_probabilities_by_stock_symbol_endpoint(stock_symbol: str):
     if probabilities is None:
         return []
     return probabilities
-    
+
+@router.get("/evaluate/{symbol}", response_model=ValuationResponse)
+def evaluate_stock_endpoint(symbol: str):
+    """Evaluate stock valuation using Gemini."""
+    result = get_stock_valuation(symbol)
+    if not result:
+        raise HTTPException(status_code=500, detail="Stock evaluation failed")
+    return result

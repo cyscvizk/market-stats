@@ -1,5 +1,6 @@
-from server.models.api import MessageResponse, HealthResponse
-from server.api.gemini import get_stock_data
+import json
+from server.models.api import MessageResponse, HealthResponse, ValuationResponse
+from server.api.gemini import get_stock_data, evaluate_stock
 from server.api.prediction import get_probability_closing_red
 from server.db_manager.sql_executor import execute_sql
 from server.db_manager.user import (
@@ -124,4 +125,27 @@ def list_probabilities_by_stock_symbol(stock_symbol: str):
     sql = sql_get_probability_by_stock_symbol()
     return execute_sql(sql, params=(stock_symbol,), fetch=True)
 
-
+def get_stock_valuation(symbol: str) -> dict:
+    """Evaluate stock valuation using Gemini."""
+    raw_response = evaluate_stock(symbol)
+    
+    # Clean up the response if it contains markdown formatting
+    if "```json" in raw_response:
+        raw_response = raw_response.split("```json")[1].split("```")[0].strip()
+    elif "```" in raw_response:
+        raw_response = raw_response.split("```")[1].split("```")[0].strip()
+        
+    try:
+        data = json.loads(raw_response)
+        return data
+    except json.JSONDecodeError:
+        return {
+            "symbol": symbol,
+            "pe_ratio": 0.0,
+            "peg_ratio": 0.0,
+            "roe": 0.0,
+            "de_ratio": 0.0,
+            "eps_growth": 0.0,
+            "evaluation": f"Error parsing response from Gemini: {raw_response}",
+            "is_undervalued": False
+        }

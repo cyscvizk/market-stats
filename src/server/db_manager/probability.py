@@ -1,6 +1,8 @@
-# functions to create sql queries for all crud tasks
+"""
+Probability table SQL query builders.
 
-# probability create function sql statement creation
+Contains functions to generate SQL statements for CRUD operations on the probability_table.
+"""
 
 def sql_create_probability():
     return """

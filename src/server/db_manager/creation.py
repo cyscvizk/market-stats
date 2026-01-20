@@ -1,8 +1,10 @@
 """
+Database creation and initialization module.
+
 Responsible for:
-# create DB
-# create tables
-# define tabels
+- Creating the SQLite database file
+- Creating required tables
+- Defining table schemas
 """
 
 import sqlite3

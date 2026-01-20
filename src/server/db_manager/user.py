@@ -1,6 +1,8 @@
-# functions to create sql queries for all crud tasks
+"""
+User table SQL query builders.
 
-# user create function sql statement creation
+Contains functions to generate SQL statements for CRUD operations on the user_table.
+"""
 
 # -------------------- CREATE --------------------
 def sql_create_user():

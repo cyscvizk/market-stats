@@ -1,5 +1,8 @@
-# check if db is present
-# check if tables are present and correct
+"""
+Database validation module.
+
+Validates database existence and table schema integrity.
+"""
 
 import sqlite3
 from pathlib import Path

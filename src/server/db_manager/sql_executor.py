@@ -1,10 +1,9 @@
-# main function to execute sql statement (sql statement is argument inserted)
+"""
+SQL execution module.
 
-# step 1: initiate database client to communicate with db
-# step 2: place cursor
-# step 3: execute sql statement
-# step 4: commit changes
-# step 5: close connection
+Provides a centralized function to execute SQL statements with proper
+error handling and connection management.
+"""
 
 import sqlite3
 from pathlib import Path

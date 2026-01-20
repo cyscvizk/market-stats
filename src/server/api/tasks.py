@@ -1,7 +1,6 @@
 import json
 from server.models.api import MessageResponse, HealthResponse, ValuationResponse
 from server.api.gemini import get_stock_data, evaluate_stock
-from server.api.prediction import get_probability_closing_red
 from server.db_manager.sql_executor import execute_sql
 from server.db_manager.user import (
     sql_create_user, sql_get_user_by_id, sql_update_user, 
@@ -19,15 +18,8 @@ def check_health() -> HealthResponse:
     return HealthResponse(status="healthy")
 
 def process_message(message: str) -> MessageResponse:
-    """Process the incoming message and return response with message details."""
-    
+    """Process the incoming message and return response with market data."""
     data_response = get_stock_data(message)
-    #probability_response = get_probability_closing_red(message)
-    
-    # 1) data = gemini_stock_data_colelctor(message)
-    # 2) function that stores data in db
-    # 3) call prediciton script
-    # 4) prepares final response with gemini again
     return MessageResponse(
         received_message=data_response,
     )

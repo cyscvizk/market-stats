@@ -1,10 +1,6 @@
 from google import genai
 from google.genai import types
 from server.api.prompts import DATA_FETCH_SYSTEM_PROMPT
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
 
 client = genai.Client()
 

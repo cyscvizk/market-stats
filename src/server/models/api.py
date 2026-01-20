@@ -18,6 +18,10 @@ class DataResponse(BaseModel):
     red_daily_ytd: int
     probability: int
 
+class StockSymbolQuery(BaseModel):
+    stock_symbol: str = Field(..., min_length=1, max_length=10, pattern="^[A-Z]+$", 
+                               description="Stock ticker symbol (uppercase letters only)")
+
  # --------------------- USER ---------------------
 
 class UserCreate(BaseModel):

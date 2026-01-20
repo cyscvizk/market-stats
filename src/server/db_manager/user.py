@@ -4,6 +4,22 @@ User table SQL query builders.
 Contains functions to generate SQL statements for CRUD operations on the user_table.
 """
 
+import hashlib
+
+
+def hash_password(password: str) -> str:
+    """
+    Hash password using SHA-256.
+    
+    Args:
+        password: Plain text password
+        
+    Returns:
+        Hashed password as hexadecimal string
+    """
+    return hashlib.sha256(password.encode()).hexdigest()
+
+
 # -------------------- CREATE --------------------
 def sql_create_user():
     return """

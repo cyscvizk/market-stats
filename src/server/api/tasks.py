@@ -1,10 +1,11 @@
 import json
+import logging
 from server.models.api import MessageResponse, HealthResponse, ValuationResponse
 from server.api.gemini import get_stock_data, evaluate_stock
 from server.db_manager.sql_executor import execute_sql
 from server.db_manager.user import (
     sql_create_user, sql_get_user_by_id, sql_update_user, 
-    sql_delete_user, sql_list_users
+    sql_delete_user, sql_list_users, hash_password
 )
 from server.db_manager.probability import (
     sql_create_probability, sql_get_probability_by_id, 
@@ -12,6 +13,8 @@ from server.db_manager.probability import (
     sql_delete_probability, sql_list_probabilities,
     sql_get_probability_by_stock_symbol
 )
+
+logger = logging.getLogger(__name__)
 
 def check_health() -> HealthResponse:
     """Check if the API is healthy."""
@@ -27,20 +30,24 @@ def process_message(message: str) -> MessageResponse:
 # --------------------- USER ---------------------
 
 def create_user(user_data) -> dict:
+    logger.info(f"Creating user: {user_data.username}")
     sql_statement = sql_create_user()
     result = execute_sql(sql_statement, params=(
         user_data.username,
         user_data.first_name,
         user_data.last_name,
         user_data.email,
-        user_data.password
+        hash_password(user_data.password)  # Hash password before storing
     ))
 
-    if result == True:
+    if result:
+        logger.info(f"User created successfully: {user_data.username}")
         return {"success": True, "message": "User created successfully"}
     elif isinstance(result, dict) and "error" in result:
+        logger.error(f"Failed to create user {user_data.username}: {result}")
         return {"success": False, **result}
     else:
+        logger.error(f"Unknown error creating user: {user_data.username}")
         return {"success": False, "message": "Unknown error"}
 
 def get_user(user_id: int):
@@ -54,7 +61,7 @@ def update_user(user_id: int, user_data):
     sql = sql_update_user()
     params = (user_data.username, user_data.first_name,
               user_data.last_name, user_data.email,
-              user_data.password, user_id)
+              hash_password(user_data.password), user_id)  # Hash password before storing
     return execute_sql(sql, params=params)
 
 def delete_user(user_id: int):
